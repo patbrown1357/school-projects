@@ -5,7 +5,7 @@ public class DLBTrie<Value>
 
   public DLBTrie()
   {
-    this.root = new DLBTrieNode();
+    this.root = null;
   }
 
   public DLBTrie( Value newVal )
@@ -27,57 +27,67 @@ public class DLBTrie<Value>
   }
 
   //template for dfs traversal of DLBTrie
-  public DLBTrieNode traverse( DLBTrieNode root )
+  public void traverse( DLBTrieNode root )
   {
-    if( root == null ) return root;
-
+    if( root == null ) return;
+    //if( root.isKey() )
+      System.out.println(root.getVal());
     travChild( root.getChild() );
     travSibling( root.getSib() );
 
-    return root;
-
   }
 
-  private DLBTrieNode travChild( DLBTrieNode root )
+  private DLBTrieNode travChild( DLBTrieNode curr )
   {
-    if( root.getChild() == null ) return null;
-    travChild( root.getChild() );
+    if( curr == null ) return null;
+    traverse( curr );
     return root;
   }
 
-  private DLBTrieNode travSibling( DLBTrieNode root )
+  private DLBTrieNode travSibling( DLBTrieNode curr )
   {
-    if( root.getSib() == null ) return null;
-    travSibling( root.getSib() );
+    if( curr == null ) return null;
+    traverse( curr );
     return root;
   }
 
   public void add( String key ) {
 
     if( key == null ) return;
+    int i = 0;
+    DLBTrieNode curr = this.root;
 
-    char[] keyArr = key.toCharArray();
+    root = add( curr, key, i );
 
-    if( this.root == null ) {
-      //if this is null add a new child sib
-      this.root = new DLBTrieNode( key.charAt(0) );
-      add( root.getChild(), keyArr, key.length(), 1 );
-    }
-
-    //check next node
-    add( root.getSib(), keyArr, key.length(), 1 );
 
   }
-  private void add( DLBTrieNode root, char[] key, int length, int pos ) {
 
-    if( length == pos ) {
-      root.makeKey();
+  private DLBTrieNode add( DLBTrieNode node, String key, int pos ) {
+
+    if( key.length()-1 == pos ) {
+      node = new DLBTrieNode( key.charAt(pos));
+      node.makeKey();
+      return node;
     }
 
-    if( root.getChild() == null ) {
-      root.setChild( new DLBTrieNode( key[pos] ) );
-      add( root.getChild(), key, length, pos + 1 );
+    if( node == null ) {
+      node = new DLBTrieNode( key.charAt(pos) );
+      node.setChild( add( node.getChild(), key, pos+1 ));
+      return node;
     }
+
+    if( !node.getVal().equals( key.charAt(pos)) )
+    {
+      node.setSib( add( node.getSib(), key, pos ) );
+      return node;
+    } else {
+      node.setChild( add( node.getChild(), key, pos+1 ) );
+
+    }
+
+    return node;
+
+
   }
 
   public void addString( String key ) {
@@ -85,13 +95,13 @@ public class DLBTrie<Value>
     char[] keyArr = key.toCharArray();
     DLBTrieNode curr = root;
     if( curr == null ) {
-      curr = new DLBTrieNode( keyArr[0] );
+      curr = new DLBTrieNode( key.charAt(0) );
       root = curr;
     }
 
     for( int i = 1; i < key.length(); i++)
     {
-      curr.makeChild( keyArr[i]);
+      curr.makeChild( key.charAt(i) );
       curr = curr.getChild();
 
     }
@@ -101,17 +111,21 @@ public class DLBTrie<Value>
   }
 
   public void printTest() {
-    root = this.getRoot();
-    if( root == null )
+    DLBTrieNode curr = this.getRoot();
+    if( curr == null )
       return;
 
-    while( !root.isKey() ) {
-      System.out.println( root.getVal() );
-      root = root.getChild();
+    while( !curr.isKey() ) {
+      System.out.println( curr.getVal() );
+      curr = curr.getChild();
+
+      if( curr == null ) return;
     }
 
-    System.out.println( root.getVal() );
+    System.out.println( curr.getVal() );
   }
+
+  public String test() { return " ";}
 
 
 }
