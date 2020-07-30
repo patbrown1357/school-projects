@@ -1,0 +1,8 @@
+C:\Users\Patrick\Desktop\cs1501-p2-pob6\BinaryStdIn.java
+C:\Users\Patrick\Desktop\cs1501-p2-pob6\BinaryStdOut.java
+C:\Users\Patrick\Desktop\cs1501-p2-pob6\LZW.java
+C:\Users\Patrick\Desktop\cs1501-p2-pob6\MyLZW.java
+C:\Users\Patrick\Desktop\cs1501-p2-pob6\Queue.java
+C:\Users\Patrick\Desktop\cs1501-p2-pob6\StdIn.java
+C:\Users\Patrick\Desktop\cs1501-p2-pob6\StdOut.java
+C:\Users\Patrick\Desktop\cs1501-p2-pob6\TST.java

@@ -1,0 +1,75 @@
+Here's a quick rundown of my calculations/estimations for my
+datastructures/techniques. Below is a more detailed account
+of what the classes are and how I've come to these numbers.
+
+N = the number of cars
+T = the type of car (make + model)
+
+Car Objects:
+  space: array of 6 strings for the attributes and 4 numbers
+  for the index of the object in each data structure
+
+Vins Tree:
+  space: linear as each node matches to one car for N cars
+  add: logN
+  remove: logN
+
+IndHeap: (indexable PQs)
+  space: Linear where for N cars there are N references in each heap
+    plus the four ints that represent indexes
+    default size is 255 with resizes doubling;
+  add: logN
+  retrieveMin: logN
+  remove: logN
+
+Make and Model Trees: (TreeMap<String, IndHeap()>)
+  space: Linear as it maps the make and model to an IndHeap
+    so for N cars with N different Makes and models its still
+    linear with an unfortunate multiplier of 255 for the default size
+    of an IndHeap()
+  add(logT + logN ) or logN asymptotically
+  remove(logT + logN) or logN asymptotically
+
+
+Car Objects
+--------------------------------------
+The car objects contain all the basic information needed contained
+in one array. It also contains four ints that represent it's position in
+all four of our priority queues. This makes it so that each of the priority
+queues can be indexable. Because of this we can index with a time of O(1)
+this is great if we can efficiently find the objects. That is left to
+the VIN Number Tree.
+
+VIN Number Tree
+--------------------------------------
+The pivotal data structure is the VIN number tree. This tree
+specifically maps the VIN numbers of each car to the actual objects
+which, as stated before, contain the mapping to the heaps/priority
+queues. The tree structure means that we maintain a worst case
+logN runtime on retrieving, adding, and removing the objects. Since
+the tree maintains it's balance. This means we can retrieve the index
+of a car into any of the priority queues in logN.
+
+IndHeap Data Structure
+--------------------------------------
+This is the priority queue structure that I have designed for this project.
+It follows the basic structure of a priority queue as outlined in the book
+(eg swim(), sink(), less(), and exch() are present). These basic methods have
+been modified in order to better suit the purpose of accessing and organizing
+these cars. There is a constant time to retrieve the lowest element as they are
+designed as min priority queues with the min at index 1. Adding and
+removing of objects is logN as for every add in the worst case will take logN
+exchanges to move up the tree. As for removing any element in the queue first
+we have the logN to find the object in the vin tree. Then the constand time
+to index into the queues. And finally the addition of the second logN to remove
+the object and sink whatever we brought up.
+
+Make and Model Trees
+--------------------------------------
+These are made using the built in TreeMap java class. These map a string that
+is the make and model concatenated to an IndHeap. To get to any heap requires
+a logN runtime to traverse down the tree. Then an O(1) to retrieve the minimum
+element. This gives a time of logN to retrieve the lowest car by make and model.
+Being indexable means that removal and retrieval of any Car from this heap is
+just the logN to find the heap and another logN to find the car and get the index
+so we maintain that logN limit as logN + logN = logN asymptotically.
